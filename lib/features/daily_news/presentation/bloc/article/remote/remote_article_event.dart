@@ -1,3 +1,5 @@
+// step: 10
+//---------------------------------------------------
 abstract class RemoteArticlesEvent {
   const RemoteArticlesEvent();
 }
