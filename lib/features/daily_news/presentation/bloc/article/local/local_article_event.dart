@@ -1,3 +1,5 @@
+// step: 19
+//---------------------------------------------------
 import 'package:equatable/equatable.dart';
 
 import '../../../../domain/entities/article.dart';
