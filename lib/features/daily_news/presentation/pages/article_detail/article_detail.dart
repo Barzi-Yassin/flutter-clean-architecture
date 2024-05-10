@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:ionicons/ionicons.dart';
-import '../../../../../injection_container.dart';
-import '../../../domain/entities/article.dart';
-import '../../bloc/article/local/local_article_bloc.dart';
-import '../../bloc/article/local/local_article_event.dart';
+import 'package:news_app_clean_architecture/features/daily_news/domain/entities/article.dart';
+import 'package:news_app_clean_architecture/features/daily_news/presentation/bloc/article/local/local_article_bloc.dart';
+import 'package:news_app_clean_architecture/features/daily_news/presentation/bloc/article/local/local_article_event.dart';
+import 'package:news_app_clean_architecture/injection_container.dart';
 
 class ArticleDetailsView extends HookWidget {
   final ArticleEntity? article;
@@ -36,15 +36,22 @@ class ArticleDetailsView extends HookWidget {
     );
   }
 
-  Widget _buildBody() {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          _buildArticleTitleAndDate(),
-          _buildArticleImage(),
-          _buildArticleDescription(),
-        ],
+  Widget _buildArticleDescription() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
+      child: Text(
+        '${article!.description ?? ''}\n\n${article!.content ?? ''}',
+        style: const TextStyle(fontSize: 16),
       ),
+    );
+  }
+
+  Widget _buildArticleImage() {
+    return Container(
+      width: double.maxFinite,
+      height: 250,
+      margin: const EdgeInsets.only(top: 14),
+      child: Image.network(article!.urlToImage!, fit: BoxFit.cover),
     );
   }
 
@@ -80,21 +87,14 @@ class ArticleDetailsView extends HookWidget {
     );
   }
 
-  Widget _buildArticleImage() {
-    return Container(
-      width: double.maxFinite,
-      height: 250,
-      margin: const EdgeInsets.only(top: 14),
-      child: Image.network(article!.urlToImage!, fit: BoxFit.cover),
-    );
-  }
-
-  Widget _buildArticleDescription() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 18),
-      child: Text(
-        '${article!.description ?? ''}\n\n${article!.content ?? ''}',
-        style: const TextStyle(fontSize: 16),
+  Widget _buildBody() {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          _buildArticleTitleAndDate(),
+          _buildArticleImage(),
+          _buildArticleDescription(),
+        ],
       ),
     );
   }
@@ -113,8 +113,7 @@ class ArticleDetailsView extends HookWidget {
   }
 
   void _onFloatingActionButtonPressed(BuildContext context) {
-    final e =
-        BlocProvider.of<LocalArticleBloc>(context).add(SaveArticle(article!));
+    BlocProvider.of<LocalArticleBloc>(context).add(SaveArticle(article!));
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         backgroundColor: Colors.black,
