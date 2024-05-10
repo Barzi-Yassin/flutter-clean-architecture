@@ -13,6 +13,7 @@ import 'features/daily_news/presentation/bloc/article/local/local_article_bloc.d
 
 final sl = GetIt.instance;
 
+// we invoke this method before runApp(); then all Classes and Contracts will be registered before the app execution.
 Future<void> initializeDependencies() async {
   final database =
       await $FloorAppDatabase.databaseBuilder('app_database.db').build();
